@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { Detail, Home } from "./pages";
+import { ROUTES } from "./constants";
 
 import "./App.css";
 
@@ -8,8 +9,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/products/:id" element={<Detail />} />
+        <Route path={ROUTES.HOME} element={<Home />} />
+        <Route path={ROUTES.PRODUCT_DETAIL} element={<Detail />} />
       </Routes>
     </Router>
   );
