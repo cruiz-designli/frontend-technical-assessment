@@ -1,12 +1,27 @@
+import { useState } from "react";
+
 import ProductList from "./components/ProductList";
+import SearchBar from "./components/SearchBar";
+
+import { Product } from "./types/products";
 
 import "./App.css";
 
 function App() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  const handleProductsUpdate = (products: Product[]) => setProducts(products);
+
   return (
     <main>
       <h1>Products</h1>
-      <ProductList />
+      <div className="container mx-auto p-4 space-y-6">
+        <SearchBar handleProductsUpdate={handleProductsUpdate} />
+        <ProductList
+          products={products}
+          handleProductsUpdate={handleProductsUpdate}
+        />
+      </div>
     </main>
   );
 }

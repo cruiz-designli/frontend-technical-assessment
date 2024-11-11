@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+
 import { API_BASE_URL } from "../constants";
 import { Product } from "../types/products";
 
-const ProductList = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+type ProductListProps = {
+  products: Product[];
+  handleProductsUpdate: (products: Product[]) => void;
+};
 
+const ProductList = ({ products, handleProductsUpdate }: ProductListProps) => {
   useEffect(() => {
     const getProducts = async () => {
       try {
         const response = await fetch(`${API_BASE_URL}/products`);
         const data = await response.json();
-        setProducts(data);
+        handleProductsUpdate(data);
       } catch (error) {
         console.error(error);
       }
