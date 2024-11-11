@@ -1,8 +1,6 @@
 import { useState } from "react";
 
-import ProductList from "./components/ProductList";
-import SearchBar from "./components/SearchBar";
-
+import { ProductList, SearchBar } from "./components";
 import { Product } from "./types/products";
 
 import "./App.css";
