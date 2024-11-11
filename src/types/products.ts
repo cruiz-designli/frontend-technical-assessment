@@ -15,4 +15,12 @@ type Product = {
   };
 };
 
-export type { Product };
+type Category = {
+  id: number;
+  name: string;
+  image: string;
+  creationAt: string;
+  updatedAt: string;
+};
+
+export type { Product, Category };
