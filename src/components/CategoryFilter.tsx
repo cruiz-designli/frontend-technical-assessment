@@ -1,58 +1,41 @@
-import { useEffect, useState } from "react";
-
-import { API_BASE_URL } from "../constants";
+import { API_BASE_URL, API_QUERY_PARAMS } from "../constants";
 import { Category } from "../types/products";
+import useFetch from "../hooks/useFetch";
+import { useSearchParams } from "react-router-dom";
 
-type CategoryFilterProps = {
-  handleProductsUpdate: (products: any) => void;
-};
+const CategoryFilter = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryId = searchParams.get(API_QUERY_PARAMS.CATEGORY) ?? "";
 
-const CategoryFilter = ({ handleProductsUpdate }: CategoryFilterProps) => {
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  const cleanCategories = (categories: Category[]) => {
-    return categories.filter(
-      (category, index, self) =>
-        index === self.findIndex((t) => t.name === category.name)
-    );
-  };
+  const { data: categories, error } = useFetch<Category[]>(
+    `${API_BASE_URL}/categories`
+  );
 
   const handleCategoryChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const categoryId = event.target.value;
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/products?categoryId=${categoryId}`
-      );
-      const data = await response.json();
-      handleProductsUpdate(data);
-    } catch (error) {
-      console.error(error);
+
+    if (!categoryId) {
+      searchParams.delete(API_QUERY_PARAMS.CATEGORY);
+      setSearchParams(searchParams);
+      return;
     }
+
+    searchParams.set(API_QUERY_PARAMS.CATEGORY, categoryId);
+    setSearchParams(searchParams);
   };
 
-  useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/categories`);
-        const data: Category[] = await response.json();
-
-        const cleanedCategories = cleanCategories(data);
-        setCategories(cleanedCategories);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    getCategories();
-  }, []);
+  if (!categories) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="max-w-44">
       <select
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
         onChange={handleCategoryChange}
+        value={categoryId}
       >
         <option value="">All categories</option>
         {categories.map((category) => (

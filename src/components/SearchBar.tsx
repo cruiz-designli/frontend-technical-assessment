@@ -1,29 +1,39 @@
-import { API_BASE_URL } from "../constants";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { API_QUERY_PARAMS } from "../constants";
+import { debounce } from "lodash";
+import { useCallback, useState } from "react";
 
-type SearchBarProps = {
-  handleProductsUpdate: (products: any) => void;
-};
+const SearchBar = () => {
+  const { pathname } = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const inputValue = searchParams.get(API_QUERY_PARAMS.TITLE) || "";
+  const [searchValue, setSearchValue] = useState(inputValue);
 
-const SearchBar = ({ handleProductsUpdate }: SearchBarProps) => {
-  const handleSearch = async (searchTerm: string) => {
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/products?title=${searchTerm}`
-      );
-      const data = await response.json();
-      handleProductsUpdate(data);
-    } catch (error) {
-      console.error(error);
-    }
+  const debouncedHandleSearch = useCallback(
+    debounce((value) => {
+      if (value === "") {
+        searchParams.delete(API_QUERY_PARAMS.TITLE);
+        return setSearchParams(searchParams);
+      }
+      setSearchParams({ [API_QUERY_PARAMS.TITLE]: value });
+    }, 600),
+    [pathname]
+  );
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setSearchValue(inputValue);
+    debouncedHandleSearch(inputValue);
   };
 
   return (
-    <div>
+    <div className="w-full">
       <input
         type="search"
-        placeholder="Search products..."
+        placeholder="Search for products..."
+        value={searchValue}
         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
-        onChange={(event) => handleSearch(event.target.value)}
+        onChange={handleSearch}
       />
     </div>
   );

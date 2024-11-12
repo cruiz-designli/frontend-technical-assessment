@@ -1,30 +1,27 @@
-import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 
-import {
-  CategoryFilter,
-  PriceRangeFilter,
-  ProductList,
-  SearchBar,
-} from "../components";
+import { ProductList, Filters } from "../components";
 import { Product } from "../types/products";
+import useFetch from "../hooks/useFetch";
+import { API_BASE_URL } from "../constants";
 
 const Home = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const location = useLocation();
+  const { search } = location;
+  const { data, error } = useFetch<Product[]>(
+    `${API_BASE_URL}/products/${search}`
+  );
 
-  const handleProductsUpdate = (products: Product[]) => setProducts(products);
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <h1>Products</h1>
       <div className="container mx-auto p-4 space-y-6">
-        <div className="flex justify-end gap-4">
-          <CategoryFilter handleProductsUpdate={handleProductsUpdate} />
-          <PriceRangeFilter handleProductsUpdate={handleProductsUpdate} />
-        </div>
-        <SearchBar handleProductsUpdate={handleProductsUpdate} />
-        <ProductList
-          products={products}
-          handleProductsUpdate={handleProductsUpdate}
-        />
+        <Filters />
+        <ProductList data={data} />
       </div>
     </>
   );
