@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-import { ProductList, Filters } from "../components";
+import { ProductList, Filters, Spinner } from "../components";
 import { Product } from "../types/products";
 import useFetch from "../hooks/useFetch";
 import { API_BASE_URL } from "../constants";
@@ -12,9 +12,7 @@ const Home = () => {
     `${API_BASE_URL}/products/${search}`
   );
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+  if (!data) return <Spinner />;
 
   return (
     <>

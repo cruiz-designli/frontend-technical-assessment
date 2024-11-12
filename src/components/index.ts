@@ -4,3 +4,4 @@ export { default as PriceRangeFilter } from "./PriceRangeFilter";
 export { default as ProductCard } from "./ProductCard";
 export { default as ProductList } from "./ProductList";
 export { default as SearchBar } from "./SearchBar";
+export { default as Spinner } from "./Spinner";
