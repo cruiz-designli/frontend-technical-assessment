@@ -1,32 +1,18 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { API_BASE_URL, ROUTES } from "../constants";
+import { ProductCard } from "../components";
+import useFetch from "../hooks/useFetch";
 import { Product } from "../types/products";
-import ProductCard from "../components/ProductCard";
+import { API_BASE_URL, ROUTES } from "../constants";
 
 const Detail = () => {
   const { id } = useParams();
-  const [product, setProduct] = useState<Product | null>(null);
   const navigate = useNavigate();
+  const { data: product, error } = useFetch<Product | null>(
+    `${API_BASE_URL}/products/${id}`
+  );
 
-  useEffect(() => {
-    if (!id) return;
-    const getProductById = async () => {
-      try {
-        const response = await fetch(`${API_BASE_URL}/products/${id}`);
-        const data = await response.json();
-        setProduct(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getProductById();
-  }, [id]);
-
-  if (!product) {
-    return <div>Loading</div>;
-  }
+  if (!product) return <div>Loading...</div>;
 
   return (
     <div className="max-w-2xl mx-auto">
