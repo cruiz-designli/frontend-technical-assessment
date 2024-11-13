@@ -6,15 +6,15 @@ import {
   Spinner,
   QueryErrorBoundary,
 } from "../components";
-import { Product } from "../types/products";
 import useFetch from "../hooks/useFetch";
-import { API_BASE_URL } from "../constants";
+import { Product } from "../types/products";
+import { API_BASE_URL, API_ENDPOINTS } from "../constants";
 
 const Home = () => {
   const location = useLocation();
   const { search } = location;
   const { data, loading, error, refetch } = useFetch<Product[]>(
-    `${API_BASE_URL}/products/${search}`
+    `${API_BASE_URL}${API_ENDPOINTS.PRODUCTS}${search}`
   );
 
   if (loading) return <Spinner />;

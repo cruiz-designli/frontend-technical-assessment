@@ -4,7 +4,7 @@ import Spinner from "./Spinner";
 import QueryErrorBoundary from "./QueryErrorBoundary";
 import useFetch from "../hooks/useFetch";
 import { Category } from "../types/products";
-import { API_BASE_URL, API_QUERY_PARAMS } from "../constants";
+import { API_BASE_URL, API_ENDPOINTS, API_QUERY_PARAMS } from "../constants";
 
 const CategoryFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,7 +15,7 @@ const CategoryFilter = () => {
     loading,
     error,
     refetch,
-  } = useFetch<Category[]>(`${API_BASE_URL}/categories`);
+  } = useFetch<Category[]>(`${API_BASE_URL}${API_ENDPOINTS.CATEGORIES}`);
 
   const handleCategoryChange = async (
     event: React.ChangeEvent<HTMLSelectElement>

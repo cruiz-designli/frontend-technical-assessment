@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ProductCard, QueryErrorBoundary, Spinner } from "../components";
 import useFetch from "../hooks/useFetch";
 import { Product } from "../types/products";
-import { API_BASE_URL, ROUTES } from "../constants";
+import { API_BASE_URL, API_ENDPOINTS, ROUTES } from "../constants";
 
 const Detail = () => {
   const { id } = useParams();
@@ -13,7 +13,9 @@ const Detail = () => {
     loading,
     error,
     refetch,
-  } = useFetch<Product | null>(`${API_BASE_URL}/products/${id}`);
+  } = useFetch<Product | null>(
+    id ? `${API_BASE_URL}${API_ENDPOINTS.PRODUCT(id)}` : ""
+  );
 
   if (loading) return <Spinner />;
 
