@@ -23,7 +23,7 @@ const Home = () => {
     <QueryErrorBoundary error={error} onRetry={refetch}>
       <div className="space-y-6">
         <Filters />
-        <ProductList data={data || []} />
+        {data && <ProductList data={data} />}
       </div>
     </QueryErrorBoundary>
   );
