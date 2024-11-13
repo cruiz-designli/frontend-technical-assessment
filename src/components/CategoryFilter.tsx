@@ -1,15 +1,21 @@
-import { API_BASE_URL, API_QUERY_PARAMS } from "../constants";
-import { Category } from "../types/products";
-import useFetch from "../hooks/useFetch";
 import { useSearchParams } from "react-router-dom";
+
+import Spinner from "./Spinner";
+import QueryErrorBoundary from "./QueryErrorBoundary";
+import useFetch from "../hooks/useFetch";
+import { Category } from "../types/products";
+import { API_BASE_URL, API_QUERY_PARAMS } from "../constants";
 
 const CategoryFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryId = searchParams.get(API_QUERY_PARAMS.CATEGORY) ?? "";
 
-  const { data: categories, error } = useFetch<Category[]>(
-    `${API_BASE_URL}/categories`
-  );
+  const {
+    data: categories,
+    loading,
+    error,
+    refetch,
+  } = useFetch<Category[]>(`${API_BASE_URL}/categories`);
 
   const handleCategoryChange = async (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -26,25 +32,25 @@ const CategoryFilter = () => {
     setSearchParams(searchParams);
   };
 
-  if (!categories) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <Spinner />;
 
   return (
-    <div className="max-w-44">
-      <select
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
-        onChange={handleCategoryChange}
-        value={categoryId}
-      >
-        <option value="">All categories</option>
-        {categories.map((category) => (
-          <option key={category.id} value={category.id}>
-            {category.name}
-          </option>
-        ))}
-      </select>
-    </div>
+    <QueryErrorBoundary error={error} onRetry={refetch}>
+      <div className="max-w-44">
+        <select
+          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
+          onChange={handleCategoryChange}
+          value={categoryId}
+        >
+          <option value="">All categories</option>
+          {categories?.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    </QueryErrorBoundary>
   );
 };
 
