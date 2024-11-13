@@ -1,29 +1,30 @@
+import { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 
-import { Product } from "../types/products";
-import ProductCard from "./ProductCard";
-
 import noResultsImage from "../assets/no-results-found.webp";
-import usePagination from "../hooks/usePagination";
+
 import { API_QUERY_PARAMS } from "../constants";
+
+import { useProducts } from "../context/ProductsContext";
+import usePagination from "../hooks/usePagination";
+
+import ProductCard from "./ProductCard";
 import Pagination from "./Pagination";
-import { useEffect } from "react";
+import QueryErrorBoundary from "./QueryErrorBoundary";
+import Spinner from "./Spinner";
 
-type ProductListProps = {
-  data: Product[];
-};
-
-const ProductList = ({ data }: ProductListProps) => {
+const ProductList = () => {
   const ITEMS_PER_PAGE = 9;
-  const MAX_TOTAL_ITEMS = 100; // this number is just to showcase pagination since the API is not well suited for pagination - this was written by Christian.
+  const MAX_TOTAL_ITEMS = 100; // this number is just to showcase pagination. However the API is not well suited for pagination - this was written by Christian Ruiz.
 
+  const { data: products, loading, error, refetch } = useProducts();
   const [searchParams, setSearchParams] = useSearchParams();
+
   const offset = parseInt(searchParams.get(API_QUERY_PARAMS.OFFSET) ?? "0", 10);
   const limit = parseInt(
     searchParams.get(API_QUERY_PARAMS.LIMIT) ?? ITEMS_PER_PAGE.toString(),
     10
   );
-
   const totalPages = Math.ceil(MAX_TOTAL_ITEMS / limit);
   const currentPage = Math.ceil(offset / limit) + 1;
 
@@ -38,7 +39,9 @@ const ProductList = ({ data }: ProductListProps) => {
     setSearchParams(searchParams);
   }, []);
 
-  if (data.length === 0) {
+  if (loading) return <Spinner />;
+
+  if (products?.length === 0) {
     return (
       <img
         src={noResultsImage}
@@ -50,9 +53,9 @@ const ProductList = ({ data }: ProductListProps) => {
   }
 
   return (
-    <div>
+    <QueryErrorBoundary error={error} onRetry={refetch}>
       <section className="grid grid-cols-[repeat(auto-fill,_minmax(min(100%,_20em),_1fr))] gap-5 min-h-screen">
-        {data.map((product) => (
+        {products?.map((product) => (
           <Link to={`/products/${product.id}`} key={product.id}>
             <ProductCard product={product} />
           </Link>
@@ -64,7 +67,7 @@ const ProductList = ({ data }: ProductListProps) => {
         currentPage={currentPage}
         limit={limit}
       />
-    </div>
+    </QueryErrorBoundary>
   );
 };
 
