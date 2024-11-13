@@ -29,12 +29,12 @@ const Filters = () => {
     setShouldBeFilteredByPrice((prev) => !prev);
   };
   return (
-    <section className="space-y-4 mb-8">
-      <div className="flex items-center gap-4">
+    <section className="space-y-4 mb-12 sm:mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-4">
         <SearchBar />
         <CategoryFilter />
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-8">
         <div className="flex items-center gap-2">
           <label htmlFor="price">Filter by price</label>
           <input

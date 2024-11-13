@@ -36,7 +36,7 @@ const CategoryFilter = () => {
 
   return (
     <QueryErrorBoundary error={error} onRetry={refetch}>
-      <div className="max-w-44">
+      <div className="w-full md:max-w-48">
         <select
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none"
           onChange={handleCategoryChange}
