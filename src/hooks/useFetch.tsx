@@ -88,7 +88,12 @@ function useFetch<T = unknown>(
   }, [url, options, fetchData]);
 
   // Return the state along with the refetch function
-  return { ...state, refetch: fetchData };
+  return {
+    ...state,
+    refetch: () => {
+      void fetchData();
+    },
+  };
 }
 
 export default useFetch;
