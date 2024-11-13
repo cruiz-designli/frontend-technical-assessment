@@ -5,6 +5,8 @@ enum API_QUERY_PARAMS {
   PRICE_MIN = "price_min",
   PRICE_MAX = "price_max",
   TITLE = "title",
+  OFFSET = "offset",
+  LIMIT = "limit",
 }
 
 const API_ENDPOINTS = {
