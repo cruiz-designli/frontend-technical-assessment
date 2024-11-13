@@ -1,50 +1,26 @@
-# React + TypeScript + Vite
+# Vite React E-Commerce Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project is an e-commerce platform built with React and Vite. It integrates with the [Fake API](https://fakeapi.platzi.com/en/rest/swagger/) to simulate real-world e-commerce functionality, including product listing, filtering, and pagination. The app is designed to provide a smooth user experience with dynamic content and modern front-end technologies.
 
-Currently, two official plugins are available:
+### Key Instructions:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Creating the project**: `npm create vite` or `yarn create vite` with the React template.
+- **Installing dependencies**: `npm install` or `yarn` to install the required packages.
+- **Running the development server**: `npm run dev` or `yarn dev` to start the local server usually at `http://localhost:3000`.
 
-## Expanding the ESLint configuration
+This provides the essential steps to get your Vite React project up and running.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Key Additions:
 
-- Configure the top-level `parserOptions` property like this:
+- **Installed Dependencies**: A section that details the libraries installed:
+  - **Tailwind CSS** for styling.
+  - **Heroicons** for icons.
+  - **React Range** for range sliders.
+  - **Vitest** for testing.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### State Management
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+In this project, most of the app's state is managed through query parameters to enhance filtering and provide better flexibility across different views of the app. This allows users to filter products, adjust settings, and navigate through various pages, with the filtering state being reflected in the URL itself.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+Query Parameters: Used for managing states like pagination, filters, and search queries.
+Context Provider: The ProductsContext is used along the Home page to provide the list of products across child components. This context allows sharing the product data between components like ProductList and Filters, ensuring a smooth user experience when managing state related to products.
