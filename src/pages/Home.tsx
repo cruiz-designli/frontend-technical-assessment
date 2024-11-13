@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     <QueryErrorBoundary error={error} onRetry={refetch}>
-      <div className="container mx-auto p-4 space-y-6">
+      <div className="space-y-6">
         <Filters />
         <ProductList data={data || []} />
       </div>
