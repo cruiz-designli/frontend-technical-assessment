@@ -11,7 +11,7 @@ const ProductCard = ({ product }: ProductCardProps) => (
     <img
       src={cleanImageUrl(product.images[0])}
       alt={product.title}
-      className="object-cover w-full max-h-80"
+      className="object-cover w-full"
       onError={(e) => {
         e.currentTarget.src = placeholderImage;
       }}
