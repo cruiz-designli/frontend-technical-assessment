@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import CategoryFilter from "./CategoryFilter";
 import PriceRangeFilter from "./PriceRangeFilter";
 import SearchBar from "./SearchBar";
-import { useSearchParams } from "react-router-dom";
 import { API_QUERY_PARAMS } from "../constants";
 
 const Filters = () => {
